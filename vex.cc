@@ -36,6 +36,8 @@ motor Motor4 = motor(PORT4, ratio18_1, false);
 motor Motor5 = motor(PORT5, ratio18_1, false);
 
 controller Controller1 = controller(primary);
+motor Motor11 = motor(PORT10, ratio18_1, false);
+
 
 
 
@@ -84,9 +86,17 @@ void moveMotors(void){
   return 0;
 }
 
+void throwCatapault(){
+  Motor11.spinToPosition(24,degrees);
+  Motor11.spinToPosition(0,degrees);
+}
+
 int main(void){
   while (1){
     setVelocities();
     moveMotors();
+    if (Controller1.ButtonB()){
+      throwCatapault();
+    }
   }
 }
