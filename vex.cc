@@ -27,6 +27,7 @@ brain Brain;
 
 
 // Robot configuration code.
+controller Controller1 = controller(primary);
 motor Motor1 = motor(PORT1, ratio18_1, false);
 
 motor Motor3 = motor(PORT3, ratio18_1, false);
@@ -35,8 +36,7 @@ motor Motor4 = motor(PORT4, ratio18_1, false);
 
 motor Motor5 = motor(PORT5, ratio18_1, false);
 
-controller Controller1 = controller(primary);
-motor Motor11 = motor(PORT10, ratio18_1, false);
+motor Motor11 = motor(PORT11, ratio18_1, true);
 
 
 
@@ -71,11 +71,10 @@ bool RemoteControlCodeEnabled = true;
 using namespace vex;
 
 void setVelocities(void){
-  Motor1.setVelocity(Controller1.Axis3()-Controller1.Axis4()/2,percent);
-  Motor5.setVelocity(Controller1.Axis3()-Controller1.Axis4()/2,percent);
-  Motor4.setVelocity(Controller1.Axis3()-Controller1.Axis4()/2,percent);
-  Motor3.setVelocity(Controller1.Axis3()-Controller1.Axis4()/2,percent);
-  return 0;
+  Motor1.setVelocity(Controller1.Axis3.position()-Controller1.Axis4.position()/2,percent);
+  Motor5.setVelocity(Controller1.Axis3.position()-Controller1.Axis4.position()/2,percent);
+  Motor4.setVelocity(Controller1.Axis3.position()-Controller1.Axis4.position()/2,percent);
+  Motor3.setVelocity(Controller1.Axis3.position()-Controller1.Axis4.position()/2,percent);
 }
 
 void moveMotors(void){
@@ -83,19 +82,19 @@ void moveMotors(void){
   Motor5.spin(reverse);
   Motor4.spin(forward);
   Motor3.spin(reverse);
-  return 0;
 }
 
 void throwCatapault(){
-  Motor11.spinToPosition(24,degrees);
+  Motor11.spinToPosition(60,degrees);
   Motor11.spinToPosition(0,degrees);
 }
 
 int main(void){
+  Motor11.setVelocity(100,percent);
   while (1){
     setVelocities();
     moveMotors();
-    if (Controller1.ButtonB()){
+    if (Controller1.ButtonB.pressing()){
       throwCatapault();
     }
   }
