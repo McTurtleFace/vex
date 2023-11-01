@@ -32,11 +32,11 @@ motor Motor1 = motor(PORT1, ratio18_1, false);
 
 motor Motor3 = motor(PORT3, ratio18_1, false);
 
-motor Motor4 = motor(PORT4, ratio18_1, false);
+motor Motor4 = motor(PORT4, ratio18_1, true);
 
-motor Motor5 = motor(PORT5, ratio18_1, false);
+motor Motor5 = motor(PORT5, ratio18_1, true);
 
-motor Motor11 = motor(PORT11, ratio18_1, true);
+motor Motor11 = motor(PORT11, ratio18_1, false);
 
 
 
@@ -79,9 +79,9 @@ void setVelocities(void){
 
 void moveMotors(void){
   Motor1.spin(forward);
-  Motor5.spin(reverse);
+  Motor5.spin(forward);
   Motor4.spin(forward);
-  Motor3.spin(reverse);
+  Motor3.spin(forward);
 }
 
 void throwCatapault(){
