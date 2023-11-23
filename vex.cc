@@ -27,17 +27,11 @@ brain Brain;
 
 
 // Robot configuration code.
+motor MotorGroup13MotorA = motor(PORT13, ratio18_1, false);
+motor MotorGroup13MotorB = motor(PORT14, ratio18_1, true);
+motor_group MotorGroup13 = motor_group(MotorGroup13MotorA, MotorGroup13MotorB);
+
 controller Controller1 = controller(primary);
-motor Motor1 = motor(PORT1, ratio18_1, false);
-
-motor Motor3 = motor(PORT3, ratio18_1, false);
-
-motor Motor4 = motor(PORT4, ratio18_1, true);
-
-motor Motor5 = motor(PORT5, ratio18_1, true);
-
-motor Motor11 = motor(PORT11, ratio18_1, false);
-
 
 
 
@@ -71,10 +65,49 @@ bool RemoteControlCodeEnabled = true;
 using namespace vex;
 
 void setVelocities(void){
-  Motor1.setVelocity(Controller1.Axis3.position()-Controller1.Axis4.position()/2,percent);
-  Motor5.setVelocity(Controller1.Axis3.position()-Controller1.Axis4.position()/2,percent);
-  Motor4.setVelocity(Controller1.Axis3.position()-Controller1.Axis4.position()/2,percent);
-  Motor3.setVelocity(Controller1.Axis3.position()-Controller1.Axis4.position()/2,percent);
+  if (Controller1.ButtonA.pressing()){
+    Motor1.setVelocity(Controller1.Axis3.position(),percent);
+    Motor5.setVelocity(Controller1.Axis3.position(),percent);
+    Motor4.setVelocity(Controller1.Axis3.position(),percent);
+    Motor3.setVelocity(Controller1.Axis3.position(),percent);
+  }
+  else if (Controller1.ButtonR1.pressing() && Controller1.ButtonL1.pressing() ||
+           Controller1.ButtonR2.pressing() && Controller1.ButtonL2.pressing()){
+    Motor1.setVelocity(Controller1.Axis3.position()/2,percent);
+    Motor5.setVelocity(Controller1.Axis3.position()/2,percent);
+    Motor4.setVelocity(Controller1.Axis3.position()/2,percent);
+    Motor3.setVelocity(Controller1.Axis3.position()/2,percent);
+  }
+  else if (Controller1.ButtonR2.pressing()){
+    Motor1.setVelocity(100,percent);
+    Motor5.setVelocity(-100,percent);
+    Motor4.setVelocity(-100,percent);
+    Motor3.setVelocity(100,percent);
+  }
+  else if (Controller1.ButtonL2.pressing()){
+    Motor1.setVelocity(-100,percent);
+    Motor5.setVelocity(100,percent);
+    Motor4.setVelocity(100,percent);
+    Motor3.setVelocity(-100,percent);
+  }
+  else if (Controller1.ButtonR1.pressing()){
+    Motor1.setVelocity(Controller1.Axis3.position()/2 + 50,percent);
+    Motor5.setVelocity(Controller1.Axis3.position()/2 - 50,percent);
+    Motor4.setVelocity(Controller1.Axis3.position()/2 - 50,percent);
+    Motor3.setVelocity(Controller1.Axis3.position()/2 + 50,percent);
+  }
+  else if (Controller1.ButtonL1.pressing()){
+    Motor1.setVelocity(Controller1.Axis3.position()/2 - 50,percent);
+    Motor5.setVelocity(Controller1.Axis3.position()/2 + 50,percent);
+    Motor4.setVelocity(Controller1.Axis3.position()/2 + 50,percent);
+    Motor3.setVelocity(Controller1.Axis3.position()/2 - 50,percent);
+  }
+  else {
+    Motor1.setVelocity(Controller1.Axis3.position()*0.75,percent);
+    Motor5.setVelocity(Controller1.Axis3.position()*0.75,percent);
+    Motor4.setVelocity(Controller1.Axis3.position()*0.75,percent);
+    Motor3.setVelocity(Controller1.Axis3.position()*0.75,percent);
+  }
 }
 
 void moveMotors(void){
@@ -84,13 +117,15 @@ void moveMotors(void){
   Motor3.spin(forward);
 }
 
-void throwCatapault(){
-  Motor11.spinToPosition(60,degrees);
-  Motor11.spinToPosition(0,degrees);
+void throwCatapault(void){
+  MotorGroup13.spinToPosition(230,degrees);
+  MotorGroup13.setVelocity(20,percent);
+  MotorGroup13.spinToPosition(-5,degrees);
+  MotorGroup13.setVelocity(100,percent);
 }
 
 int main(void){
-  Motor11.setVelocity(100,percent);
+  MotorGroup13.setVelocity(100,percent);
   while (1){
     setVelocities();
     moveMotors();
