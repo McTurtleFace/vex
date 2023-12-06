@@ -130,9 +130,9 @@ void moveMotors(void){ // actually moves motors
 void throwCatapault(void){ //This throws the catapult of Jon Devlin
   Motor6.setVelocity(100,percent);
   Motor6.spin(forward);
-  MotorGroup13.spinToPosition(70,degrees);
+  MotorGroup13.spinToPosition(65,degrees);
   MotorGroup13.setVelocity(20,percent);
-  MotorGroup13.spinToPosition(-5,degrees);
+  MotorGroup13.spinToPosition(-10,degrees);
   MotorGroup13.setVelocity(100,percent);
   Motor6.stop();
 }
