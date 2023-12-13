@@ -36,8 +36,6 @@ motor Motor4 = motor(PORT4, ratio18_1, false);
 
 motor Motor5 = motor(PORT5, ratio18_1, true);
 
-motor Motor6 = motor(PORT6, ratio18_1, true);
-
 motor MotorGroup13MotorA = motor(PORT13, ratio18_1, true);
 motor MotorGroup13MotorB = motor(PORT14, ratio18_1, false);
 motor_group MotorGroup13 = motor_group(MotorGroup13MotorA, MotorGroup13MotorB);
@@ -76,17 +74,17 @@ using namespace vex;
 
 void setVelocities(void){ 
   if (Controller1.ButtonA.pressing()){ // full speed ahead code
-    Motor1.setVelocity(Controller1.Axis3.position()*-1,percent);
-    Motor5.setVelocity(Controller1.Axis3.position(),percent);
-    Motor4.setVelocity(Controller1.Axis3.position(),percent);
-    Motor3.setVelocity(Controller1.Axis3.position()*-1,percent);
+    Motor1.setVelocity(Controller1.Axis3.position(),percent);
+    Motor5.setVelocity(Controller1.Axis3.position()*-1,percent);
+    Motor4.setVelocity(Controller1.Axis3.position()*-1,percent);
+    Motor3.setVelocity(Controller1.Axis3.position(),percent);
   }
   else if (Controller1.ButtonR1.pressing() && Controller1.ButtonL1.pressing() ||
            Controller1.ButtonR2.pressing() && Controller1.ButtonL2.pressing()){ // incase somebody is stupid
-    Motor1.setVelocity(Controller1.Axis3.position()/-2,percent);
-    Motor5.setVelocity(Controller1.Axis3.position()/2,percent);
-    Motor4.setVelocity(Controller1.Axis3.position()/2,percent);
-    Motor3.setVelocity(Controller1.Axis3.position()/-2,percent);
+    Motor1.setVelocity(Controller1.Axis3.position()/2,percent);
+    Motor5.setVelocity(Controller1.Axis3.position()/-2,percent);
+    Motor4.setVelocity(Controller1.Axis3.position()/-2,percent);
+    Motor3.setVelocity(Controller1.Axis3.position()/2,percent);
   }
   else if (Controller1.ButtonR2.pressing()){ // turns right on the spot
     Motor1.setVelocity(100,percent);
@@ -140,6 +138,48 @@ void throwCatapault(void){ //This throws the catapult of Jon Devlin
 void intakeCatapault(void){
   Motor6.setVelocity(100,percent);
   Motor6.spin(forward);
+}
+
+void autonomousPeriod(void){
+  intakeCatapault();
+  Motor1.setVelocity(-100,percent);
+  Motor5.setVelocity(-100,percent);
+  Motor4.setVelocity(100,percent);
+  Motor3.setVelocity(100,percent);
+  Motor1.spinFor(forward,1500,degrees);
+  Motor3.spinFor(forward,1500,degrees);
+  Motor4.spinFor(forward,1500,degrees);
+  Motor5.spinFor(forward,1500,degrees);
+
+  Motor1.setVelocity(100,percent);
+  Motor5.setVelocity(100,percent);
+  Motor4.setVelocity(-100,percent);
+  Motor3.setVelocity(-100,percent);
+  Motor1.spinFor(forward,6500,degrees);
+  Motor3.spinFor(forward,6500,degrees);
+  Motor4.spinFor(forward,6500,degrees);
+  Motor5.spinFor(forward,6500,degrees);
+
+  Motor1.setVelocity(-100,percent);
+  Motor5.setVelocity(-100,percent);
+  Motor4.setVelocity(-100,percent);
+  Motor3.setVelocity(-100,percent);
+  Motor1.spinFor(forward,500,degrees);
+  Motor3.spinFor(forward,500,degrees);
+  Motor4.spinFor(forward,500,degrees);
+  Motor5.spinFor(forward,500,degrees);
+  throwCatapault();
+}
+
+void getOutOfWayForAutonomous(void){
+  Motor1.setVelocity(-100,percent);
+  Motor5.setVelocity(-100,percent);
+  Motor4.setVelocity(100,percent);
+  Motor3.setVelocity(100,percent);
+  Motor1.spinFor(forward,1500,degrees);
+  Motor3.spinFor(forward,1500,degrees);
+  Motor4.spinFor(forward,1500,degrees);
+  Motor5.spinFor(forward,1500,degrees);
 }
 
 int main(void){
