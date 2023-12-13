@@ -40,6 +40,8 @@ motor MotorGroup13MotorA = motor(PORT13, ratio18_1, true);
 motor MotorGroup13MotorB = motor(PORT14, ratio18_1, false);
 motor_group MotorGroup13 = motor_group(MotorGroup13MotorA, MotorGroup13MotorB);
 
+motor Motor6 = motor(PORT6, ratio18_1, true);
+
 
 
 
@@ -146,28 +148,28 @@ void autonomousPeriod(void){
   Motor5.setVelocity(-100,percent);
   Motor4.setVelocity(100,percent);
   Motor3.setVelocity(100,percent);
-  Motor1.spinFor(forward,1500,degrees);
-  Motor3.spinFor(forward,1500,degrees);
-  Motor4.spinFor(forward,1500,degrees);
-  Motor5.spinFor(forward,1500,degrees);
+  Motor1.spinFor(forward,1500,degrees, false);
+  Motor3.spinFor(forward,1500,degrees, false);
+  Motor4.spinFor(forward,1500,degrees, false);
+  Motor5.spinFor(forward,1500,degrees, false);
 
   Motor1.setVelocity(100,percent);
   Motor5.setVelocity(100,percent);
   Motor4.setVelocity(-100,percent);
   Motor3.setVelocity(-100,percent);
-  Motor1.spinFor(forward,6500,degrees);
-  Motor3.spinFor(forward,6500,degrees);
-  Motor4.spinFor(forward,6500,degrees);
-  Motor5.spinFor(forward,6500,degrees);
+  Motor1.spinFor(forward,6500,degrees, false);
+  Motor3.spinFor(forward,6500,degrees, false);
+  Motor4.spinFor(forward,6500,degrees, false);
+  Motor5.spinFor(forward,6500,degrees, false);
 
   Motor1.setVelocity(-100,percent);
   Motor5.setVelocity(-100,percent);
   Motor4.setVelocity(-100,percent);
   Motor3.setVelocity(-100,percent);
-  Motor1.spinFor(forward,500,degrees);
-  Motor3.spinFor(forward,500,degrees);
-  Motor4.spinFor(forward,500,degrees);
-  Motor5.spinFor(forward,500,degrees);
+  Motor1.spinFor(forward,500,degrees, false);
+  Motor3.spinFor(forward,500,degrees, false);
+  Motor4.spinFor(forward,500,degrees, false);
+  Motor5.spinFor(forward,500,degrees, false);
   throwCatapault();
 }
 
@@ -184,6 +186,7 @@ void getOutOfWayForAutonomous(void){
 
 int main(void){
   MotorGroup13.setVelocity(100,percent);
+  autonomousPeriod();
   while ("Jon Devlin"){
     setVelocities();
     moveMotors();
