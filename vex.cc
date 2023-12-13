@@ -151,7 +151,7 @@ void autonomousPeriod(void){
   Motor1.spinFor(forward,1500,degrees, false);
   Motor3.spinFor(forward,1500,degrees, false);
   Motor4.spinFor(forward,1500,degrees, false);
-  Motor5.spinFor(forward,1500,degrees, false);
+  Motor5.spinFor(forward,1500,degrees);
 
   Motor1.setVelocity(100,percent);
   Motor5.setVelocity(100,percent);
@@ -160,7 +160,7 @@ void autonomousPeriod(void){
   Motor1.spinFor(forward,6500,degrees, false);
   Motor3.spinFor(forward,6500,degrees, false);
   Motor4.spinFor(forward,6500,degrees, false);
-  Motor5.spinFor(forward,6500,degrees, false);
+  Motor5.spinFor(forward,6500,degrees);
 
   Motor1.setVelocity(-100,percent);
   Motor5.setVelocity(-100,percent);
@@ -169,7 +169,7 @@ void autonomousPeriod(void){
   Motor1.spinFor(forward,500,degrees, false);
   Motor3.spinFor(forward,500,degrees, false);
   Motor4.spinFor(forward,500,degrees, false);
-  Motor5.spinFor(forward,500,degrees, false);
+  Motor5.spinFor(forward,500,degrees);
   throwCatapault();
 }
 
@@ -186,7 +186,7 @@ void getOutOfWayForAutonomous(void){
 
 int main(void){
   MotorGroup13.setVelocity(100,percent);
-  autonomousPeriod();
+  //autonomousPeriod();
   while ("Jon Devlin"){
     setVelocities();
     moveMotors();
