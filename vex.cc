@@ -144,32 +144,39 @@ void intakeCatapault(void){
 
 void autonomousPeriod(void){
   intakeCatapault();
-  Motor1.setVelocity(-100,percent);
-  Motor5.setVelocity(-100,percent);
+  Motor1.setVelocity(100,percent);
+  Motor5.setVelocity(100,percent);
   Motor4.setVelocity(100,percent);
   Motor3.setVelocity(100,percent);
   Motor1.spinFor(forward,1500,degrees, false);
   Motor3.spinFor(forward,1500,degrees, false);
-  Motor4.spinFor(forward,1500,degrees, false);
-  Motor5.spinFor(forward,1500,degrees);
+  Motor4.spinFor(reverse,1500,degrees, false);
+  Motor5.spinFor(reverse,1500,degrees);
 
-  Motor1.setVelocity(100,percent);
-  Motor5.setVelocity(100,percent);
-  Motor4.setVelocity(-100,percent);
-  Motor3.setVelocity(-100,percent);
-  Motor1.spinFor(forward,6500,degrees, false);
-  Motor3.spinFor(forward,6500,degrees, false);
-  Motor4.spinFor(forward,6500,degrees, false);
-  Motor5.spinFor(forward,6500,degrees);
+  Motor1.spinFor(reverse,200,degrees, false);
+  Motor3.spinFor(reverse,200,degrees, false);
+  Motor4.spinFor(forward,200,degrees, false);
+  Motor5.spinFor(forward,200,degrees);
 
-  Motor1.setVelocity(-100,percent);
-  Motor5.setVelocity(-100,percent);
-  Motor4.setVelocity(-100,percent);
-  Motor3.setVelocity(-100,percent);
-  Motor1.spinFor(forward,500,degrees, false);
-  Motor3.spinFor(forward,500,degrees, false);
-  Motor4.spinFor(forward,500,degrees, false);
-  Motor5.spinFor(forward,500,degrees);
+  Motor1.spinFor(forward,1600,degrees, false);
+  Motor3.spinFor(forward,1600,degrees, false);
+  Motor4.spinFor(reverse,1600,degrees, false);
+  Motor5.spinFor(reverse,1600,degrees);
+
+  Motor1.spinFor(reverse,250,degrees, false);
+  Motor3.spinFor(reverse,250,degrees, false);
+  Motor4.spinFor(reverse,250,degrees, false);
+  Motor5.spinFor(reverse,250,degrees);
+
+  Motor1.spinFor(reverse,3500,degrees, false);
+  Motor3.spinFor(reverse,3500,degrees, false);
+  Motor4.spinFor(forward,3500,degrees, false);
+  Motor5.spinFor(forward,3500,degrees);
+
+  Motor1.spinFor(forward,250,degrees, false);
+  Motor3.spinFor(forward,250,degrees, false);
+  Motor4.spinFor(forward,250,degrees, false);
+  Motor5.spinFor(forward,250,degrees);
   throwCatapault();
 }
 
@@ -186,7 +193,7 @@ void getOutOfWayForAutonomous(void){
 
 int main(void){
   MotorGroup13.setVelocity(100,percent);
-  //autonomousPeriod();
+  autonomousPeriod();
   while ("Jon Devlin"){
     setVelocities();
     moveMotors();
