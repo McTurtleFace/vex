@@ -27,21 +27,15 @@ brain Brain;
 
 
 // Robot configuration code.
+motor leftMotorA = motor(PORT1, ratio18_1, false);
+motor leftMotorB = motor(PORT2, ratio18_1, false);
+motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB);
+motor rightMotorA = motor(PORT4, ratio18_1, true);
+motor rightMotorB = motor(PORT3, ratio18_1, true);
+motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
+drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 332, 285, mm, 0.7142857142857143);
+
 controller Controller1 = controller(primary);
-motor Motor1 = motor(PORT1, ratio18_1, false);
-
-motor Motor3 = motor(PORT3, ratio18_1, true);
-
-motor Motor4 = motor(PORT4, ratio18_1, false);
-
-motor Motor5 = motor(PORT5, ratio18_1, true);
-
-motor MotorGroup13MotorA = motor(PORT13, ratio18_1, true);
-motor MotorGroup13MotorB = motor(PORT14, ratio18_1, false);
-motor_group MotorGroup13 = motor_group(MotorGroup13MotorA, MotorGroup13MotorB);
-
-motor Motor6 = motor(PORT6, ratio18_1, true);
-
 
 
 
@@ -67,56 +61,40 @@ bool RemoteControlCodeEnabled = true;
 /*    Description:  V5 project                                                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-
-// Include the V5 Library
-#include "vex.h"
   
 // Allows for easier use of the VEX Library
 using namespace vex;
 
 void setVelocities(void){ 
-  if (Controller1.ButtonA.pressing()){ // full speed ahead code
-    Motor1.setVelocity(Controller1.Axis3.position(),percent);
-    Motor5.setVelocity(Controller1.Axis3.position()*-1,percent);
-    Motor4.setVelocity(Controller1.Axis3.position()*-1,percent);
-    Motor3.setVelocity(Controller1.Axis3.position(),percent);
-  }
-  else if (Controller1.ButtonR1.pressing() && Controller1.ButtonL1.pressing() ||
-           Controller1.ButtonR2.pressing() && Controller1.ButtonL2.pressing()){ // incase somebody is stupid
-    Motor1.setVelocity(Controller1.Axis3.position()/2,percent);
-    Motor5.setVelocity(Controller1.Axis3.position()/-2,percent);
-    Motor4.setVelocity(Controller1.Axis3.position()/-2,percent);
-    Motor3.setVelocity(Controller1.Axis3.position()/2,percent);
-  }
-  else if (Controller1.ButtonR2.pressing()){ // turns right on the spot
-    Motor1.setVelocity(100,percent);
-    Motor5.setVelocity(100,percent);
-    Motor4.setVelocity(100,percent);
-    Motor3.setVelocity(100,percent);
-  }
-  else if (Controller1.ButtonL2.pressing()){ // turns left on the spot
+  if (Controller1.ButtonR2.pressing()){ // turns right on the spot
     Motor1.setVelocity(-100,percent);
     Motor5.setVelocity(-100,percent);
     Motor4.setVelocity(-100,percent);
     Motor3.setVelocity(-100,percent);
   }
+  else if (Controller1.ButtonL2.pressing()){ // turns left on the spot
+    Motor1.setVelocity(100,percent);
+    Motor5.setVelocity(100,percent);
+    Motor4.setVelocity(100,percent);
+    Motor3.setVelocity(100,percent);
+  }
   else if (Controller1.ButtonR1.pressing()){ // turns right while accepting drive instructions
-    Motor1.setVelocity(Controller1.Axis3.position()/2 + 50,percent);
-    Motor5.setVelocity(Controller1.Axis3.position()/2 + 50,percent);
-    Motor4.setVelocity(Controller1.Axis3.position()/2 + 50,percent);
-    Motor3.setVelocity(Controller1.Axis3.position()/2 + 50,percent);
+    Motor1.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position()/2,percent);
+    Motor5.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position()/2,percent);
+    Motor4.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position()/2,percent);
+    Motor3.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position()/2,percent);
   }
   else if (Controller1.ButtonL1.pressing()){ // turns left while accepting drive instructions
-    Motor1.setVelocity(Controller1.Axis3.position()/2 - 50,percent);
-    Motor5.setVelocity(Controller1.Axis3.position()/2 - 50,percent);
-    Motor4.setVelocity(Controller1.Axis3.position()/2 - 50,percent);
-    Motor3.setVelocity(Controller1.Axis3.position()/2 - 50,percent);
+    Motor1.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position(),percent);
+    Motor5.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position(),percent);
+    Motor4.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position(),percent);
+    Motor3.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position(),percent);
   }
   else { // default movement code
-    Motor1.setVelocity(Controller1.Axis3.position()*0.75,percent);
-    Motor5.setVelocity(Controller1.Axis3.position()*-0.75,percent);
-    Motor4.setVelocity(Controller1.Axis3.position()*-0.75,percent);
-    Motor3.setVelocity(Controller1.Axis3.position()*0.75,percent);
+    Motor1.setVelocity(Controller1.Axis3.position()*-1,percent);
+    Motor5.setVelocity(Controller1.Axis3.position(),percent);
+    Motor4.setVelocity(Controller1.Axis3.position(),percent);
+    Motor3.setVelocity(Controller1.Axis3.position()*-1,percent);
   }
 }
 
