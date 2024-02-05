@@ -27,15 +27,18 @@ brain Brain;
 
 
 // Robot configuration code.
-motor leftMotorA = motor(PORT1, ratio18_1, false);
-motor leftMotorB = motor(PORT2, ratio18_1, false);
-motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB);
-motor rightMotorA = motor(PORT4, ratio18_1, true);
-motor rightMotorB = motor(PORT3, ratio18_1, true);
-motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
-drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 332, 285, mm, 0.7142857142857143);
-
 controller Controller1 = controller(primary);
+motor Motor1 = motor(PORT1, ratio18_1, false);
+
+motor Motor3 = motor(PORT3, ratio18_1, false);
+
+motor Motor4 = motor(PORT4, ratio18_1, false);
+
+motor Motor5 = motor(PORT5, ratio18_1, false);
+
+motor Motor6 = motor(PORT6, ratio18_1, false);
+
+digital_out DigitalOutA = digital_out(Brain.ThreeWirePort.A);
 
 
 
@@ -53,139 +56,85 @@ bool RemoteControlCodeEnabled = true;
 
 #pragma endregion VEXcode Generated Robot Configuration
 
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
-/*    Author:       Trent Miedema                                             */
+/*    Author:       {author}                                                  */
 /*    Created:      {date}                                                    */
 /*    Description:  V5 project                                                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-  
-// Allows for easier use of the VEX Library
+
+
+// Include the V5 Library
+#include "vex.h"
+#include <cmath>
+ // Allows for easier use of the VEX Library
 using namespace vex;
 
-void setVelocities(void){ 
-  if (Controller1.ButtonR2.pressing()){ // turns right on the spot
-    Motor1.setVelocity(-100,percent);
-    Motor5.setVelocity(-100,percent);
-    Motor4.setVelocity(-100,percent);
-    Motor3.setVelocity(-100,percent);
-  }
-  else if (Controller1.ButtonL2.pressing()){ // turns left on the spot
-    Motor1.setVelocity(100,percent);
-    Motor5.setVelocity(100,percent);
-    Motor4.setVelocity(100,percent);
-    Motor3.setVelocity(100,percent);
-  }
-  else if (Controller1.ButtonR1.pressing()){ // turns right while accepting drive instructions
-    Motor1.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position()/2,percent);
-    Motor5.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position()/2,percent);
-    Motor4.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position()/2,percent);
-    Motor3.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position()/2,percent);
-  }
-  else if (Controller1.ButtonL1.pressing()){ // turns left while accepting drive instructions
-    Motor1.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position(),percent);
-    Motor5.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position(),percent);
-    Motor4.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position(),percent);
-    Motor3.setVelocity(Controller1.Axis3.position()/2 + Controller1.Axis1.position(),percent);
-  }
-  else { // default movement code
-    Motor1.setVelocity(Controller1.Axis3.position()*-1,percent);
-    Motor5.setVelocity(Controller1.Axis3.position(),percent);
-    Motor4.setVelocity(Controller1.Axis3.position(),percent);
-    Motor3.setVelocity(Controller1.Axis3.position()*-1,percent);
-  }
+
+void setVelocities(int front){
+ int motorOne = -1 * ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()+Controller1.Axis1.position())/2) ) * front;
+ int motorThree = ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()+Controller1.Axis1.position())/2) ) * front;
+ int motorTwo = -1 * ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()-Controller1.Axis1.position())/2) ) * front;
+ int motorFour = ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()-Controller1.Axis1.position())/2) ) * front;
+
+
+ Motor1.setVelocity(motorOne,percent);
+ Motor3.setVelocity(motorTwo,percent);
+ Motor4.setVelocity(motorThree,percent);
+ Motor5.setVelocity(motorFour,percent);
 }
 
-void moveMotors(void){ // actually moves motors
-  Motor1.spin(forward);
-  Motor5.spin(forward);
-  Motor4.spin(forward);
-  Motor3.spin(forward);
+void moveMotors(void){
+ Motor1.spin(forward);
+ Motor3.spin(forward);
+ Motor4.spin(forward);
+ Motor5.spin(forward);
 }
 
-void throwCatapault(void){ //This throws the catapult of Jon Devlin
-  Motor6.setVelocity(100,percent);
-  Motor6.spin(forward);
-  MotorGroup13.spinToPosition(65,degrees);
-  MotorGroup13.setVelocity(20,percent);
-  MotorGroup13.spinToPosition(-10,degrees);
-  MotorGroup13.setVelocity(100,percent);
-  Motor6.stop();
+
+void moveWingsOut(void){
+ Motor6.spinFor(forward,5,turns,false);
 }
 
-void intakeCatapault(void){
-  Motor6.setVelocity(100,percent);
-  Motor6.spin(forward);
+
+void intake(int running){
+ Motor7.spin(forward);
 }
 
-void autonomousPeriod(void){
-  intakeCatapault();
-  Motor1.setVelocity(100,percent);
-  Motor5.setVelocity(100,percent);
-  Motor4.setVelocity(100,percent);
-  Motor3.setVelocity(100,percent);
-  Motor1.spinFor(forward,1500,degrees, false);
-  Motor3.spinFor(forward,1500,degrees, false);
-  Motor4.spinFor(reverse,1500,degrees, false);
-  Motor5.spinFor(reverse,1500,degrees);
 
-  Motor1.spinFor(reverse,200,degrees, false);
-  Motor3.spinFor(reverse,200,degrees, false);
-  Motor4.spinFor(forward,200,degrees, false);
-  Motor5.spinFor(forward,200,degrees);
+void outtake(void){
+ Motor7.spinFor(reverse,5,turns,true);
+}
+/*
+void autonomous(void){
+  // basic
+  // drive forwards (copy code from setVelocities) use moveMotors
+}
+*/
 
-  Motor1.spinFor(forward,1600,degrees, false);
-  Motor3.spinFor(forward,1600,degrees, false);
-  Motor4.spinFor(reverse,1600,degrees, false);
-  Motor5.spinFor(reverse,1600,degrees);
-
-  Motor1.spinFor(reverse,250,degrees, false);
-  Motor3.spinFor(reverse,250,degrees, false);
-  Motor4.spinFor(reverse,250,degrees, false);
-  Motor5.spinFor(reverse,250,degrees);
-
-  Motor1.spinFor(reverse,3500,degrees, false);
-  Motor3.spinFor(reverse,3500,degrees, false);
-  Motor4.spinFor(forward,3500,degrees, false);
-  Motor5.spinFor(forward,3500,degrees);
-
-  Motor1.spinFor(forward,250,degrees, false);
-  Motor3.spinFor(forward,250,degrees, false);
-  Motor4.spinFor(forward,250,degrees, false);
-  Motor5.spinFor(forward,250,degrees);
-  throwCatapault();
+void catapult(void){
+  DigitalOutA.set(true);
+  wait(1,seconds)
+  DigitalOutA.set(false);
 }
 
-void getOutOfWayForAutonomous(void){
-  Motor1.setVelocity(-100,percent);
-  Motor5.setVelocity(-100,percent);
-  Motor4.setVelocity(100,percent);
-  Motor3.setVelocity(100,percent);
-  Motor1.spinFor(forward,1500,degrees);
-  Motor3.spinFor(forward,1500,degrees);
-  Motor4.spinFor(forward,1500,degrees);
-  Motor5.spinFor(forward,1500,degrees);
+int main(void) {
+ int frontDirection = 1, wingsOut = 0, intakeRunning = 0;
+ DigitalOutA.set(false);
+
+ while (1){
+   if (Controller1.ButtonB.pressed()) frontDirection = frontDirection * (-1);
+   else if (!wingsOut && Controller1.ButtonY.pressed()) moveWingsOut();
+   setVelocities(frontDirection);
+   moveMotors();
+   if (Controller1.ButtonR2.pressing()) catapult(); 
+   if (Controller1.ButtonA.pressed()) intake(intakeRunning);
+   if (intakeRunning && Controller1.ButtonX.pressed()) outtake();
+ }
 }
 
-int main(void){
-  MotorGroup13.setVelocity(100,percent);
-  autonomousPeriod();
-  while ("Jon Devlin"){
-    setVelocities();
-    moveMotors();
-    if (Controller1.ButtonB.pressing()){
-      throwCatapault();
-    }
-    else if (Controller1.ButtonY.pressing()){
-      intakeCatapault();
-    }
-  }
-}
 
-// Motors 3 & 5 should be set to reverse or at least the opposite of 4 & 1
-// Motors 13 & 14 should be in a motor group with 13 set to reverse
-// Motor 6 should be reverse
-// Make sure to connect the controller
-// Make sure to praise the Dev gods
+
