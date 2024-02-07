@@ -75,10 +75,10 @@ using namespace vex;
 
 
 void setVelocities(int front){
- int motorOne = -1 * ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()+Controller1.Axis1.position())/2) ) * front;
+ int motorOne = ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()+Controller1.Axis1.position())/2) ) * front;
  int motorThree = ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()+Controller1.Axis1.position())/2) ) * front;
  int motorTwo = -1 * ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()-Controller1.Axis1.position())/2) ) * front;
- int motorFour = ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()-Controller1.Axis1.position())/2) ) * front;
+ int motorFour = -1 * ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()-Controller1.Axis1.position())/2) ) * front;
 
 
  Motor1.setVelocity(motorOne,percent);
@@ -100,13 +100,18 @@ void moveWingsOut(void){
 }
 
 
-void intake(int running){
- Motor7.spin(forward);
+void intake(int * running){
+ Motor7.spinFor(reverse,2,turns,true);
+ Motor7.setVelocity(50,percent);
+ Motor7.spin(reverse);
+ *running = 1;
 }
 
 
-void outtake(void){
+void outtake(int * running){
+ Motor7.setVelocity(50,percent);
  Motor7.spinFor(reverse,5,turns,true);
+ *running = 0;
 }
 /*
 void autonomous(void){
@@ -131,8 +136,8 @@ int main(void) {
    setVelocities(frontDirection);
    moveMotors();
    if (Controller1.ButtonR2.pressing()) catapult(); 
-   if (Controller1.ButtonA.pressed()) intake(intakeRunning);
-   if (intakeRunning && Controller1.ButtonX.pressed()) outtake();
+   if (Controller1.ButtonA.pressed()) intake(&intakeRunning);
+   if (intakeRunning && Controller1.ButtonX.pressed()) outtake(&intakeRunning);
  }
 }
 
