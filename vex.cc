@@ -94,36 +94,24 @@ void moveMotors(void){
  Motor5.spin(forward);
 }
 
-
-void moveWingsOut(void){
- Motor6.spinFor(forward,5,turns,false);
-}
-
-
-void intake(int * running){
- Motor7.spinFor(reverse,2,turns,true);
+void intake(){
  Motor7.setVelocity(50,percent);
  Motor7.spin(reverse);
- *running = 1;
 }
 
 
-void outtake(int * running){
+void outtake(){
  Motor7.setVelocity(50,percent);
- Motor7.spinFor(reverse,5,turns,true);
- *running = 0;
+ Motor7.spin(forward);
 }
-/*
-void autonomous(void){
-  // basic
-  // drive forwards (copy code from setVelocities) use moveMotors
-}
-*/
 
-void catapult(void){
-  DigitalOutA.set(true);
-  wait(1,seconds)
-  DigitalOutA.set(false);
+void autonomous(void){
+ Motor1.setVelocity(100,percent);
+ Motor3.setVelocity(100,percent);
+ Motor4.setVelocity(-100,percent);
+ Motor5.setVelocity(-100,percent);
+
+ moveMotors();
 }
 
 int main(void) {
@@ -135,9 +123,18 @@ int main(void) {
    else if (!wingsOut && Controller1.ButtonY.pressed()) moveWingsOut();
    setVelocities(frontDirection);
    moveMotors();
-   if (Controller1.ButtonR2.pressing()) catapult(); 
-   if (Controller1.ButtonA.pressed()) intake(&intakeRunning);
-   if (intakeRunning && Controller1.ButtonX.pressed()) outtake(&intakeRunning);
+   if (Controller1.ButtonA.pressed()) {
+     intake();
+     intakeRunning = 1;
+   }
+   else if (Controller1.ButtonB.pressed()) {
+     outtake();
+     intakeRunning = 1;
+   }
+   else if (intakeRunning && Controller1.ButtonX.pressed()) {
+     Motor7.stop();
+     intakeRunning = 0;
+   }
  }
 }
 
