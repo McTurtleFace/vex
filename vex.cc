@@ -75,10 +75,10 @@ using namespace vex;
 
 
 void setVelocities(int front){
- int motorOne = ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()+Controller1.Axis1.position())/2) ) * front;
- int motorThree = ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()+Controller1.Axis1.position())/2) ) * front;
- int motorTwo = -1 * ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()-Controller1.Axis1.position())/2) ) * front;
- int motorFour = -1 * ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis1.position()):((Controller1.Axis1.position()-Controller1.Axis1.position())/2) ) * front;
+ int motorOne = ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis3.position()):((Controller1.Axis3.position()+Controller1.Axis1.position())/2) ) * front;
+ int motorThree = ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis3.position()):((Controller1.Axis3.position()+Controller1.Axis1.position())/2) ) * front;
+ int motorTwo = -1 * ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis3.position()):((Controller1.Axis3.position()-Controller1.Axis1.position())/2) ) * front;
+ int motorFour = -1 * ( (abs(Controller1.Axis1.position) < 10)? (Controller1.Axis3.position()):((Controller1.Axis3.position()-Controller1.Axis1.position())/2) ) * front;
 
 
  Motor1.setVelocity(motorOne,percent);
