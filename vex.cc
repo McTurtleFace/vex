@@ -114,7 +114,7 @@ void autonomous(void){
  moveMotors();
 }
 
-int main(void) {
+void opcontrol(void) {
  int frontDirection = 1, wingsOut = 0, intakeRunning = 0;
  DigitalOutA.set(false);
  Motor8.setVelocity(100,percent);
