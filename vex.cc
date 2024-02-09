@@ -117,10 +117,25 @@ void autonomous(void){
 int main(void) {
  int frontDirection = 1, wingsOut = 0, intakeRunning = 0;
  DigitalOutA.set(false);
+ Motor8.setVelocity(100,percent);
+ Motor9.setVelocity(-100,percent);
 
  while (1){
    if (Controller1.ButtonB.pressed()) frontDirection = frontDirection * (-1);
-   else if (!wingsOut && Controller1.ButtonY.pressed()) moveWingsOut();
+
+   if (Controller1.ButtonR1.pressed()){
+     Motor8.spinFor(reverse,1,degrees,false);
+   }
+   else if (Controller1.ButtonR2.pressed()){
+     Motor8.spinFor(forward,1,degrees,false);
+   }
+   else if (Controller1.ButtonL1.pressed()){
+     Motor9.spinFor(reverse,1,degrees,false);
+   }
+   else if (Controller1.ButtonL2.pressed()){
+     Motor9.spinFor(forward,1,degrees,false);
+   }
+   
    setVelocities(frontDirection);
    moveMotors();
    if (Controller1.ButtonA.pressed()) {
